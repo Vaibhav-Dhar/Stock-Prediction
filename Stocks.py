@@ -4,7 +4,6 @@ import pandas as pd
 import cufflinks as cf
 import matplotlib.pyplot as plt
 import datetime
-# hello
 
 st.markdown('''
 # Stock Prediction App
