@@ -1,1 +1,1 @@
-Created a python based stocks prediction web app using yfinance,streamlit,cufflinks,numpy and matplotlib.
+Created a python based stocks prediction web app using yfinance,streamlit,cufflinks and numpy.
