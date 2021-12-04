@@ -2,45 +2,37 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import cufflinks as cf
-import datetime
+import datetime 
 
+# App title
 st.markdown('''
 # Stock Prediction App
 Shown are the stock price data of Listed 500 US companies!
 
 **Credits**
-- App built by [ Vaibhav Dhar ]
+- App built by [Vaibhav Dhar]
 - Built in `Python` using `streamlit`,`yfinance`, `cufflinks`, `pandas` and `datetime`
 ''')
 st.write('---')
 
-st.sidebar.subheader('Query parameters')
+# Sidebar
+st.sidebar.subheader('Query Parameters')
 start_date = st.sidebar.date_input("Start date", datetime.date(2000, 1, 1))
 end_date = st.sidebar.date_input("End date", datetime.date(2021, 10, 31))
 
+# Retrieving tickers data
 ticker_list = pd.read_csv('companies.txt')
-tickerSymbol = st.sidebar.selectbox('Stock ticker', ticker_list) 
-tickerData = yf.Ticker(tickerSymbol) 
+tickerSymbol = st.sidebar.selectbox('Stock ticker', ticker_list) # Select ticker symbol
+tickerData = yf.Ticker(tickerSymbol) # Get ticker data
 tickerDf = tickerData.history(period='1d', start=start_date, end=end_date)
 
-string_logo = '<img src=%s>' % tickerData.info['logo_url']
+if tickerData.info['logo_url'] == "":
+    string_logo = '<img src=%s width="20px" height="20px">' % "https://q2z5x2y2.rocketcdn.me/wp-content/uploads/2019/03/Chrome-Broken-Image-Icon.png"
+else:
+    string_logo = '<img src=%s width="20px" height="20px" >' % tickerData.info['logo_url']
 st.markdown(string_logo, unsafe_allow_html=True)
-
-
-string_name = tickerData.info['longName']
-st.header('**%s**' % string_name)
-
-string_summary = tickerData.info['longBusinessSummary']
-st.info(string_summary)
-
-string_sector = tickerData.info['sector']
-st.info(f"Sector = {string_sector}")
-
 string_currentPrice = tickerData.info['currentPrice']
 st.info(f"Current Price = {string_currentPrice}")
-
-string_pegRatio = tickerData.info['pegRatio']
-st.info(f"PE Ratio = {string_pegRatio}")
 
 string_marketCap = tickerData.info['marketCap']
 st.info(f"Market Cap = {string_marketCap}")
@@ -59,8 +51,3 @@ qf=cf.QuantFig(tickerDf,title='First Quant Figure',legend='top',name='GS')
 qf.add_bollinger_bands()
 fig = qf.iplot(asFigure=True)
 st.plotly_chart(fig)
-
-
-
-
-
